@@ -56,11 +56,12 @@ func Add(w http.ResponseWriter, r *http.Request) {
 		product.Category.Id = uint(categoryId)
 		product.Stock = int64(stock)
 		product.Description = r.FormValue("description")
-		product.CreatedAt = time.Now().Format("2006-01-02 15:04:05")
-		product.UpdatedAt = time.Now().Format("2006-01-02 15:04:05")
+		product.CreatedAt = time.Now()
+		product.UpdatedAt = time.Now()
 
 		if ok := productmodel.Create(product); !ok {
 			http.Redirect(w, r, r.Header.Get("Referer"), http.StatusTemporaryRedirect)
+			return
 		}
 
 		http.Redirect(w, r, "/products", http.StatusSeeOther)
@@ -135,10 +136,11 @@ func Edit(w http.ResponseWriter, r *http.Request) {
 		product.Category.Id = uint(categoryId)
 		product.Stock = int64(stock)
 		product.Description = r.FormValue("description")
-		product.UpdatedAt = time.Now().Format("2006-01-02 15:04:05")
+		product.UpdatedAt = time.Now()
 
 		if ok := productmodel.Update(id, product); !ok {
 			http.Redirect(w, r, r.Header.Get("Referer"), http.StatusTemporaryRedirect)
+			return
 		}
 
 		http.Redirect(w, r, "/products", http.StatusSeeOther)

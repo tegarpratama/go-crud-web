@@ -37,8 +37,8 @@ func Add(w http.ResponseWriter, r *http.Request) {
 		var category entities.Category
 
 		category.Name = r.FormValue("name")
-		category.CreatedAt = time.Now().Format("2006-01-02 15:04:05")
-		category.UpddatedAt = time.Now().Format("2006-01-02 15:04:05")
+		category.CreatedAt = time.Now()
+		category.UpddatedAt = time.Now()
 
 		ok := categorymodel.Create(category)
 		if !ok {
@@ -81,10 +81,11 @@ func Edit(w http.ResponseWriter, r *http.Request) {
 		}
 
 		category.Name = r.FormValue("name")
-		category.UpddatedAt = time.Now().Format("2006-01-02 15:04:05")
+		category.UpddatedAt = time.Now()
 
 		if ok := categorymodel.Update(id, category); !ok {
 			http.Redirect(w, r, r.Header.Get("Referer"), http.StatusTemporaryRedirect)
+			return
 		}
 
 		http.Redirect(w, r, "/categories", http.StatusSeeOther)
